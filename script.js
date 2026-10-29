@@ -1,72 +1,70 @@
 
 const targetImg = document.getElementById("img");
-const options = document.querySelectorAll(".options");
+const container = document.querySelector(".flex");
 const verify = document.getElementById("verify");
 const reset = document.getElementById("reset");
 const heading = document.getElementById("h");
 
 const imgs = ["img1", "img2", "img3", "img4", "img5"];
 
-let correctImg;
-let selectedOption = null;
-
-verify.style.display = "none";
-reset.style.display = "none";
+let selected = [];
+let tileImages = [];
 
 function setupCaptcha() {
-  const randomIndex = Math.floor(Math.random() * imgs.length);
-  correctImg = imgs[randomIndex];
+  selected = [];
+  tileImages = [...imgs];
 
-  targetImg.className = correctImg;
+  const duplicateIndex = Math.floor(Math.random() * imgs.length);
+  tileImages.push(imgs[duplicateIndex]);
 
-  const shuffledImgs = [...imgs];
-
-  for (let i = shuffledImgs.length - 1; i > 0; i--) {
+  for (let i = tileImages.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffledImgs[i], shuffledImgs[j]] =
-      [shuffledImgs[j], shuffledImgs[i]];
+    [tileImages[i], tileImages[j]] = [tileImages[j], tileImages[i]];
   }
 
-  options.forEach((option, index) => {
-    option.className = shuffledImgs[index] + " options";
-    option.classList.remove("selected");
-  });
+  container.innerHTML = "";
 
-  selectedOption = null;
-  verify.style.display = "none";
-  reset.style.display = "none";
+  tileImages.forEach((image, index) => {
+    const tile = document.createElement("div");
+    tile.className = `${image} options`;
+    tile.dataset.image = image;
+    tile.dataset.index = index;
+    container.appendChild(tile);
+
+    tile.addEventListener("click", () => {
+      if (selected.length >= 2 || selected.includes(tile)) {
+        return;
+      }
+
+      selected.push(tile);
+      tile.classList.add("selected");
+
+      reset.style.display = "inline-block";
+      verify.style.display =
+        selected.length === 2 ? "inline-block" : "none";
+    });
+  });
 
   heading.textContent =
     "Please click on the identical tiles to verify that you are not a robot.";
+
+  verify.style.display = "none";
+  reset.style.display = "none";
 }
 
-options.forEach((option) => {
-  option.addEventListener("click", () => {
-    options.forEach((item) => {
-      item.classList.remove("selected");
-    });
-
-    option.classList.add("selected");
-    selectedOption = option;
-
-    verify.style.display = "inline-block";
-    reset.style.display = "inline-block";
-
-    heading.textContent = "Click Verify to check your selection.";
-  });
-});
-
 verify.addEventListener("click", () => {
-  if (!selectedOption) {
-    heading.textContent = "Please select an image first.";
+  if (selected.length !== 2) {
     return;
   }
 
-  if (selectedOption.classList.contains(correctImg)) {
-    heading.textContent = "Verification successful!";
+  if (selected[0].dataset.image === selected[1].dataset.image) {
+    heading.textContent = "You are a human. Congratulations!";
   } else {
-    heading.textContent = "Incorrect image. Please try again.";
+    heading.textContent =
+      "We can't verify you as a human. You selected the non-identical tiles.";
   }
+
+  verify.style.display = "none";
 });
 
 reset.addEventListener("click", setupCaptcha);

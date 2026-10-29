@@ -38,3 +38,24 @@ p {
 button {
   margin: 20px;
 }
+
+.options {
+  width: 100px;
+  height: 120px;
+  margin: 10px;
+  border: 5px solid #555;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.selected {
+  border: 5px solid rgb(0, 195, 255);
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
