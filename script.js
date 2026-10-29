@@ -12,8 +12,32 @@ let selectedCnt = 0;
 
 options.forEach((option)=>{
 	option.addEventListener("click",() => {
-		if (option.classList.contains) {
-			
+		if (option.classList.contains("selected")) {
+			option.classList.remove("selected");
+			selectedCnt --;
 		}
-	})
-})
+		else{
+			option.classList.add("selected");
+			selectedCnt++;
+		}
+
+		if (selectedCnt === 1) {
+			verify.style.display = "block";
+			reset.style.display = "block";
+		} else {
+			verify.style.display = "none";
+			reset.style.display = "none";
+		}
+	});
+});
+
+reset.addEventListener("click",() =>{
+	options.forEach((option) => {
+		option.classList.remove("selected");
+	});
+
+	selectedCnt = 0;
+
+	verify.style.display = "none";
+	reset.style.display = "none";
+});
