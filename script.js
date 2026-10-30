@@ -41,15 +41,15 @@ function setupCaptcha() {
 
       reset.style.display = "inline-block";
       verify.style.display =
-        selected.length === 2 ? "inline-block" : "none";
+        selected.length === 2 ? "inline-block" : "hidden";
     });
   });
 
   heading.textContent =
     "Please click on the identical tiles to verify that you are not a robot.";
 
-  verify.style.display = "none";
-  reset.style.display = "none";
+  verify.style.display = "hidden";
+  reset.style.display = "hidden";
 }
 
 verify.addEventListener("click", () => {
@@ -64,7 +64,7 @@ verify.addEventListener("click", () => {
       "We can't verify you as a human. You selected the non-identical tiles.";
   }
 
-  verify.style.display = "none";
+  verify.style.display = "hidden";
 });
 
 reset.addEventListener("click", setupCaptcha);
