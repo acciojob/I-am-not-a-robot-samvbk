@@ -41,15 +41,15 @@ function setupCaptcha() {
 
       reset.style.display = "inline-block";
       verify.style.display =
-        selected.length === 2 ? "inline-block" : "hidden";
+        selected.length === 2 ? "inline-block" : "none";
     });
   });
 
   heading.textContent =
     "Please click on the identical tiles to verify that you are not a robot.";
 
-  verify.style.display = "hidden";
-  reset.style.display = "hidden";
+  verify.style.display = "none";
+  reset.style.display = "none";
 }
 
 verify.addEventListener("click", () => {
